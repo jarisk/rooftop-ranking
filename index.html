@@ -106,6 +106,8 @@ Error generating stack: `+l.message+`
                 { href: '/cookie-policy/', text: 'Cookie Policy' }
               ];
               
+              // Match the styling of the existing footer links (e.g. the email link)
+              linksContainer.classList.add('flex-wrap', 'justify-center');
               links.forEach(link => {
                 // Check if link already exists
                 const existing = Array.from(footer.querySelectorAll('a')).find(a => a.href.includes(link.href));
@@ -113,8 +115,7 @@ Error generating stack: `+l.message+`
                   const a = document.createElement('a');
                   a.href = link.href;
                   a.textContent = link.text;
-                  a.style.display = 'block';
-                  a.style.marginBottom = '0.5rem';
+                  a.className = lastLink.className || 'text-xs text-white/30 hover:text-[oklch(0.78_0.17_65)] transition-colors duration-300';
                   linksContainer.appendChild(a);
                 }
               });
