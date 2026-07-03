@@ -78,6 +78,54 @@ Error generating stack: `+l.message+`
 </script>
 
     <div id="root"></div>
+    <script>
+      // Inject footer links for legal pages
+      (function() {
+        function injectFooterLinks() {
+          // Wait for footer to be rendered by React
+          const footer = document.querySelector('footer');
+          if (!footer) {
+            setTimeout(injectFooterLinks, 100);
+            return;
+          }
+          
+          // Find or create a links section in the footer
+          let linksSection = footer.querySelector('[data-legal-links]');
+          if (!linksSection) {
+            // Look for existing footer links and add to them
+            const footerLinks = footer.querySelectorAll('a');
+            if (footerLinks.length > 0) {
+              // Add links after the last existing link
+              const lastLink = footerLinks[footerLinks.length - 1];
+              const linksContainer = lastLink.parentElement;
+              
+              // Create links if they don't exist
+              const links = [
+                { href: '/privacy-policy/', text: 'Privacy Policy' },
+                { href: '/terms-of-service/', text: 'Terms of Service' },
+                { href: '/cookie-policy/', text: 'Cookie Policy' }
+              ];
+              
+              links.forEach(link => {
+                // Check if link already exists
+                const existing = Array.from(footer.querySelectorAll('a')).find(a => a.href.includes(link.href));
+                if (!existing) {
+                  const a = document.createElement('a');
+                  a.href = link.href;
+                  a.textContent = link.text;
+                  a.style.display = 'block';
+                  a.style.marginBottom = '0.5rem';
+                  linksContainer.appendChild(a);
+                }
+              });
+            }
+          }
+        }
+        
+        // Start checking after a small delay to allow React to render
+        setTimeout(injectFooterLinks, 500);
+      })();
+    </script>
     <script
       defer
       src="https://manus-analytics.com/umami"
